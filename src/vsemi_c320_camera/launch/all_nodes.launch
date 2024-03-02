@@ -4,7 +4,7 @@
   <arg name="ns" default="vsemi_c320_camera"/>
   <arg name="nn" default="camera"/>
   <arg name="respawn" default="false"/>  
-  <arg name="lens_type" default="1"/>
+  <arg name="lens_type" default="0"/>
   <arg name="lens_center_offset_x" default="0"/>
   <arg name="lens_center_offset_y" default="0"/>
   <arg name="image_type" default="1"/>
@@ -12,7 +12,7 @@
   <arg name="hdr_mode"  default="0"/>
   <arg name="int0"  default="1200"/>
   <arg name="int1"  default="200"/>
-  <arg name="int_gray" default="25000"/>
+  <arg name="int_gray" default="0"/>
   <arg name="offset" default="0"/>
   <arg name="min_amplitude" default="60"/>
   <arg name="frequency_modulation" default="2"/>
@@ -28,7 +28,8 @@
   <arg name="use_last_value" default="false"/>
   <arg name="cartesian" default="true"/>
   <arg name="publish_point_cloud" default="true"/>
-  <arg name="video_camera" default="usb-046d_Logitech_Webcam_C930e_986A01BE-video-index0"/>
+  <arg name="video_camera" default="/dev/v4l/by-id/usb-046d_Logitech_Webcam_C930e_986A01BE-video-index0"/>
+  <arg name="imu_port" default="/dev/ttyUSB0"/>
 
   <group ns="$(arg ns)">
     <node pkg="vsemi_c320_camera"
@@ -62,6 +63,7 @@
       <param name="cartesian" value="$(arg cartesian)"/>
       <param name="publish_point_cloud" value="$(arg publish_point_cloud)"/>
       <param name="video_camera" value="$(arg video_camera)"/>
+      <param name="imu_port" value="$(arg imu_port)"/>
 
     </node>
 

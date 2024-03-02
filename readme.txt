@@ -65,18 +65,19 @@ Build and run application:
   >> sudo chmod a+rxw src/vsemi_c320_camera/cfg/vsemi_c320_camera.cfg
 
   >> catkin_make
+  
+Grant permission if running not under root:
+
+  # in case your IMU at ttyUSB0:
+
+  >> sudo chmod a+rw /dev/ttyUSB0
 
 To start the ROS application
 ============================
 
   #Add a static IP for PC:
   
-  10.10.31.191
-
-  #Edit run.sh and sensor.sh
-  
-  export ROS_IP=10.10.31.191
-  export ROS_MASTER_URI=http://10.10.31.191:11311
+  10.10.31.192
 
   # run command:
 
@@ -125,7 +126,7 @@ Run Application in Distributed Environment
 
   #Add a static IP for PC:
   
-  10.10.31.191
+  10.10.31.192
 
   #Edit rviz.sh, change to the Nano's static IP address:
   
@@ -141,6 +142,6 @@ Run Application in Distributed Environment
   
   >> export ROS_MASTER_URI=http://10.10.31.191:11311
   
-  >> rosbag record /vsemi_c320_camera/camera/cloud /vsemi_c320_camera/camera/camera /vsemi_c320_camera/camera/video
+  >> rosbag record /vsemi_c320_camera/camera/cloud /vsemi_c320_camera/camera/cloud_raw /vsemi_c320_camera/camera/depth_bgr /vsemi_c320_camera/camera/camera /vsemi_c320_camera/camera/amplitude /vsemi_c320_camera/camera/video
 
 
