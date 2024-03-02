@@ -1,29 +1,29 @@
-# 自动跟车系统
+# VSemi ToF Camera
 
 [TOC]
 
-## 1 系统部署
+## 1 Quick Start
 
-### 1.1 系统安装
-> 正常安装Ubuntu 20.04 Desktop 64bit 版本，过程不详细描述。
+### 1.1 Install
+> Install Ubuntu 20.04 Desktop 64bit.
 
-### 1.2 系统设置
-#### 1.2.1 关闭系统自动更新
-#### 1.2.2 设置自动登录
-#### 1.2.3 设置永不休眠
-#### 1.2.4 设置移动网络自动激活
-#### 1.2.5 设置VPN自动连接
-#### 1.2.6 设置660转接板网卡IP
+### 1.2 Settings
+#### 1.2.1 Disable auto update
+#### 1.2.2 Set auto login
+#### 1.2.3 Disable auto sleep
+#### 1.2.4 Set Network
+#### 1.2.5 Set auto connect
+#### 1.2.6 Set ToF camera connect to Ethnet
 > 10.10.31.191/24
 
-### 1.3 ROS安装
+### 1.3 ROS Install
 
-#### 1.3.1 设置sources.list
+#### 1.3.1 Set sources.list
 ```bash
 sudo sh -c '. /etc/lsb-release && echo "deb http://mirrors.ustc.edu.cn/ros/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list'
 ```
 
-#### 1.3.2 设置密钥
+#### 1.3.2 Set key
 ```bash
 sudo apt install curl
 ```
@@ -31,7 +31,7 @@ sudo apt install curl
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 ```
 
-#### 1.3.3 安装
+#### 1.3.3 Install
 ```bash
 sudo apt update
 ```
@@ -39,7 +39,7 @@ sudo apt update
 sudo apt install ros-noetic-desktop-full
 ```
 
-#### 1.3.4 环境变量
+#### 1.3.4 Set environment
 ```bash
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 ```
@@ -47,12 +47,12 @@ echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-#### 1.3.5 依赖库
+#### 1.3.5 Dependancies
 ```bash
 sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
 ```
 
-#### 1.3.6 初始化ROS
+#### 1.3.6 Init ROS
 ```bash
 sudo rosdep init
 ```
@@ -60,26 +60,26 @@ sudo rosdep init
 rosdep update
 ```
 
-### 1.4 驱动部署
+### 1.4 Set port
 
-#### 1.4.1 IMU驱动
+#### 1.4.1 IMU Port
 文件：/etc/udev/rules.d/90-sj-vision.ttyimu.rules
 ```bash
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE:="0777", SYMLINK+="ttyIMU"
 
 ```
 
-### 1.5 源码部署
+### 1.5 Source
 
-#### 1.5.1 目录路径
+#### 1.5.1 Source path
 ```bash
-$ cd /home/sj-vision/Applications/VSEMI_TOF_HARV_SF
+$ cd ~/VSEMI_TOF_320
 ```
 
-### 1.6 配置自动启动
-#### 1.6.1 自动初始化CAN卡
+### 1.6 Set auto-start
+#### 1.6.1 Set CAN
 
-文件：/etc/init.d/initCAN
+File：/etc/init.d/initCAN
 
 ```bash
 #!/bin/sh -e
@@ -91,13 +91,13 @@ ip link set can0 up
 ip link set can0 txqueuelen 1000
 ```
 
-加入开机启动
+Create auto Start
 
 ```bash
 $ sudo ln -s /etc/init.d/initCAN /etc/rc4.d/S60initCAN
 ```
-#### 1.6.2 桌面环境配置开机自启
+#### 1.6.2 Start
 ```bash
-$ /bin/bash /home/sj-vision/Applications/VSEMI_TOF_HARV_SF/run.sh &
+$ ~/VSEMI_TOF_HARV_SF/run.sh &
 ```
 
