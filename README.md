@@ -69,15 +69,16 @@ KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE:="077
 
 ```
 
-### 1.5 Source
-
-#### 1.5.1 Source path
+#### 1.5 Compile and run:
 ```bash
 $ cd ~/VSEMI_TOF_320
 ```
 
-#### 1.6 Start command:
 ```bash
-$ ~/VSEMI_TOF_HARV_SF/run.sh &
+$ catkin_make
+```
+
+```bash
+$ ./run.sh &
 ```
 
