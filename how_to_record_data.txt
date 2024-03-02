@@ -1,0 +1,3 @@
+rosbag record /vsemi_tof_harv/camera/cloud /vsemi_tof_harv/camera/video /vsemi_tof_harv/camera/camera /vsemi_tof_harv/camera/sprout
+
+

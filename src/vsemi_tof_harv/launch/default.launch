@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="ns" default="vsemi_tof_harv"/>
+  <arg name="nn" default="camera"/>
+  <arg name="respawn" default="false"/>  
+  <!-- set the lens type, 0: WF, 1: SF -->
+  <arg name="fov_type" default="0"/>  
+  <!-- set the default integration time, for example: 3200 -->
+  <arg name="int0"  default="3400"/>
+  <!-- set the default min amplitude, for example: 60 -->
+  <arg name="min_amplitude" default="60"/>
+  <!-- set the default modulation, 2: 6MHz -->
+  <arg name="frequency_modulation" default="2"/>
+  <!-- set the default channel -->
+  <arg name="channel" default="0"/>
+  <!-- set the min, max and increase step for auto-integration time adjustment, 2600 recommended -->
+  <arg name="min_integration_time"  default="2600"/>
+  <!-- set the min, max and increase step for auto-integration time adjustment, 4000 recommended -->
+  <arg name="max_integration_time"  default="4000"/>
+  <!-- set the min, max and increase step for auto-integration time adjustment, 100 recommended -->
+  <arg name="step_integration_time"  default="200"/>
+  <!-- set the max tolerance of overflow points, 60 recommended -->
+  <arg name="max_tolerance_overflow"  default="60"/>
+  <!-- set the max tolerance of low amplitude points, 400 recommended -->
+  <arg name="max_tolerance_low_amplitude"  default="400"/>
+  <!-- set default distance from camera to truck center, normally about 3.0 -->
+  <arg name="default_truck_center_distance"  default="3.0"/>
+  <!-- set RGB camdera -->
+  <arg name="video_camera" default="/dev/v4l/by-id/usb-RGB_RGB_Camera_200901010001-video-index0"/>
+  <!-- set IMU port -->
+  <arg name="imu_port" default="/dev/ttyIMU"/>
+  <!-- set CAN port -->
+  <arg name="socket_can" default="can0"/>
+  <!-- set Serial port -->
+  <arg name="serial_port" default="/dev/ttyUSB0"/>
+  <!-- to be used for testing -->
+  <arg name="test_frame" default=""/>
+  <arg name="data_replay" default="false"/>
+
+  <group ns="$(arg ns)">
+    <node pkg="vsemi_tof_harv"
+          type="harv_node"
+          name="$(arg nn)"
+          output="screen"
+          respawn="$(arg respawn)">
+
+      <param name="fov_type" value="$(arg fov_type)"/>
+      <param name="int0" value="$(arg int0)"/>
+      <param name="min_amplitude" value="$(arg min_amplitude)"/>
+      <param name="frequency_modulation" value="$(arg frequency_modulation)"/>
+      <param name="channel" value="$(arg channel)"/>
+      <param name="min_integration_time" value="$(arg min_integration_time)"/>
+      <param name="max_integration_time" value="$(arg max_integration_time)"/>
+      <param name="step_integration_time" value="$(arg step_integration_time)"/>
+      <param name="max_tolerance_overflow" value="$(arg max_tolerance_overflow)"/>
+      <param name="max_tolerance_low_amplitude" value="$(arg max_tolerance_low_amplitude)"/>
+      <param name="default_truck_center_distance" value="$(arg default_truck_center_distance)"/>
+      <param name="video_camera" value="$(arg video_camera)"/>
+      <param name="imu_port" value="$(arg imu_port)"/>
+      <param name="socket_can" value="$(arg socket_can)"/>
+      <param name="serial_port" value="$(arg serial_port)"/>
+      <param name="test_frame" value="$(arg test_frame)"/>
+      <param name="data_replay" value="$(arg data_replay)"/>
+
+    </node>
+    <node name="base_link" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map sensor_frame 1" />
+
+  </group>
+</launch>
