@@ -60,10 +60,10 @@ sudo rosdep init
 rosdep update
 ```
 
-### 1.4 Set port
+### 1.4 Set IMU port
 
 #### 1.4.1 IMU Port
-文件：/etc/udev/rules.d/90-sj-vision.ttyimu.rules
+File：/etc/udev/rules.d/vsemi.ttyimu.rules
 ```bash
 KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE:="0777", SYMLINK+="ttyIMU"
 
@@ -76,27 +76,7 @@ KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE:="077
 $ cd ~/VSEMI_TOF_320
 ```
 
-### 1.6 Set auto-start
-#### 1.6.1 Set CAN
-
-File：/etc/init.d/initCAN
-
-```bash
-#!/bin/sh -e
-
-# initialization socket can
-# ip link set can0 down
-ip link set can0 type can bitrate 250000
-ip link set can0 up
-ip link set can0 txqueuelen 1000
-```
-
-Create auto Start
-
-```bash
-$ sudo ln -s /etc/init.d/initCAN /etc/rc4.d/S60initCAN
-```
-#### 1.6.2 Start
+#### 1.6 Start command:
 ```bash
 $ ~/VSEMI_TOF_HARV_SF/run.sh &
 ```
