@@ -299,7 +299,7 @@ void updateConfig(vsemi_c320_camera::vsemi_c320_cameraConfig &config, uint32_t l
     //medianFilter = config.median_filter;
     //averageFilter = config.average_filter;
 
-    align = config.align;
+    //align = config.align;
     
     setParameters();
 
@@ -621,13 +621,13 @@ void initialise()
     
     //video_camera = "/dev/v4l/by-id/" + video_camera;
 
-    video_publisher = nh.advertise<sensor_msgs::Image>("video", 1);
+    video_publisher = nh.advertise<sensor_msgs::Image>("rgb", 1);
     //amplitude_publisher = nh.advertise<sensor_msgs::Image>("amplitude", 1);
     cloud_publisher = nh.advertise<pcl::PointCloud<pcl::PointXYZRGBL> > ("cloud", 1);
     //cloud_raw_publisher = nh.advertise<pcl::PointCloud<pcl::PointXYZRGBL> > ("cloud_raw", 1);
 	//depth_raw_Publisher = nh.advertise<std_msgs::Float64MultiArray>("depth_raw", 1);
 	depth_bgr_Publisher = nh.advertise<sensor_msgs::Image>("depth_bgr", 1);
-	pose_camera_publisher     = nh.advertise<geometry_msgs::PoseStamped>("camera", 1);
+	pose_camera_publisher     = nh.advertise<geometry_msgs::PoseStamped>("imu", 1);
 
     //connect to interface
     connectionCameraInfo = interface->subscribeCameraInfo([&](std::shared_ptr<CameraInfo> ci) -> void { updateCameraInfo(ci); });

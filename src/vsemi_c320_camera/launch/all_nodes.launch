@@ -29,7 +29,7 @@
   <arg name="cartesian" default="true"/>
   <arg name="publish_point_cloud" default="true"/>
   <arg name="video_camera" default="/dev/v4l/by-id/usb-046d_Logitech_Webcam_C930e_986A01BE-video-index0"/>
-  <arg name="imu_port" default="/dev/ttyUSB0"/>
+  <arg name="imu_port" default="/dev/ttyIMU"/>
 
   <group ns="$(arg ns)">
     <node pkg="vsemi_c320_camera"

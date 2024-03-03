@@ -34,10 +34,10 @@ Install ROS Noetic
   
   >> exit
 
-Read RGB camera ID
+Find RGB camera ID
 ==================
 
-   # plug in one RGB camera, and run command to find each camera ID:
+   # plug in RGB/IMU, and run command to find each camera ID:
    
    ls /dev/v4l/by-id
    
@@ -53,10 +53,57 @@ Read RGB camera ID
 Config RGB camera ID
 ====================
 
-   # Using text editor, open file camera.launch, under src/vsemi_c320_camera/launch
+   # Using text editor, open file all_nodes.launch, under src/vsemi_c320_camera/launch
    # edit line 31 as below, enter camera ID retrived from previous step:
    
-   <arg name="video_camera" default="usb-Chicony_Electronics_Co._Ltd._Integrated_Camera_0001-video-index0"/>
+   <arg name="video_camera" default="/dev/v4l/by-id/usb-046d_Logitech_Webcam_C930e_986A01BE-video-index0"/>
+
+Find IMU
+==================
+
+   # plug in RGB/IMU, and run command to find each usb device:
+   
+   lsusb
+   
+   # from the list, find the ID of the IMU:
+   
+   Bus 001 Device 003: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+   
+   # read the detailed info of the IMU:
+   
+   lsusb -v -d 10c4:ea60
+   
+   # from the output, find:
+   
+   idVendor           0x10c4 Silicon Labs
+   idProduct          0xea60 CP210x UART Bridge
+   
+Re-mapping IMU for convenience
+====================
+
+   # create a file:
+   
+   sudo vi /etc/udev/rules.d/99-vsemi.ttyimu.rules
+   
+   # which contains:
+   
+   KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0777", SYMLINK+="ttyIMU"
+   
+   # the idVendor and idProduct founs from previous step
+   
+   # reboot ubuntu, then, check the mapping:
+   
+   ls /dev/ttyIMU
+   
+   # you should able to find the IMU entry
+
+Config IMU
+====================
+
+   # Using text editor, open file all_nodes.launch, under src/vsemi_c320_camera/launch
+   # edit line 31 as below, enter camera ID retrived from previous step:
+   
+   <arg name="imu_port" default="/dev/ttyIMU"/>
    
 Build and run application:
 
@@ -66,7 +113,7 @@ Build and run application:
 
   >> catkin_make
   
-Grant permission if running not under root:
+Grant permission if you did not re-mapping IMU under root (skip the step if IMU been re-mapped):
 
   # in case your IMU at ttyUSB0:
 
@@ -75,73 +122,17 @@ Grant permission if running not under root:
 To start the ROS application
 ============================
 
-  #Add a static IP for PC:
+  #Add a static IP for PC to access TOF camera. TOF camera has an static IP 10.10.31.180. So the address for PC can be set to:
   
-  10.10.31.192
+  10.10.31.190
 
   # run command:
 
-  >> sudo -s
-  
-  # enter password
-
   # ./run.sh
 
-Record ROS bag
-==============
-
-  # start another command line console:
-
-  >> rosbag record /vsemi_c320_camera/camera/cloud /vsemi_c320_camera/camera/cloud_raw /vsemi_c320_camera/camera/depth_bgr /vsemi_c320_camera/camera/camera /vsemi_c320_camera/camera/amplitude /vsemi_c320_camera/camera/video
-   
 To stop ROS
 ===========
 
   # please press Ctr + C in terminal 
-
-
-Run Application in Distributed Environment
-==========================================
-
-1. On Jetson Nano:
-
-  #Add a static IP for Nano:
   
-  10.10.31.191
-
-  #Edit sensor.sh, change to the Nano's static IP address:
-  
-  export ROS_IP=10.10.31.191
-  export ROS_MASTER_URI=http://10.10.31.191:11311
-
-  # then run command to start sensor node only:
-
-  >> sudo -s
-  
-  # enter password
-
-  # ./sensor.sh
-
-2. On remote PC:
-
-  #Add a static IP for PC:
-  
-  10.10.31.192
-
-  #Edit rviz.sh, change to the Nano's static IP address:
-  
-  export ROS_MASTER_URI=http://10.10.31.191:11311
-
-  # then run command to start rviz node:
-
-  >> ./rviz.sh
-
-3. To record data:
-
-  # in a terminal, run command below before recording:
-  
-  >> export ROS_MASTER_URI=http://10.10.31.191:11311
-  
-  >> rosbag record /vsemi_c320_camera/camera/cloud /vsemi_c320_camera/camera/cloud_raw /vsemi_c320_camera/camera/depth_bgr /vsemi_c320_camera/camera/camera /vsemi_c320_camera/camera/amplitude /vsemi_c320_camera/camera/video
-
 
